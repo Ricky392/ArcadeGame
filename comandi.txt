@@ -1,0 +1,9 @@
+from prj root directory
+
+compile: javac -d . src/Arcade.java
+run:     java bin.Arcade
+
+
+TODO:
+	1. Arcade:122
+	2. Arcade:135
