@@ -7,3 +7,10 @@ run:     java bin.Arcade
 TODO:
 	1. Arcade:122
 	2. Arcade:135
+
+	echo "# ArcadeGame" >> README.md
+	git init
+	git add README.md
+	git commit -m "first commit"
+	git remote add origin git@github.com:Ricky392/ArcadeGame.git
+	git push -u origin master
