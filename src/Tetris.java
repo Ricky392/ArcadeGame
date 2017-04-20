@@ -235,11 +235,14 @@ public class Tetris extends JPanel{
 		drawPiece(g);
 	}
 
-	public static void main(String[] args){
+	//public static void main(String[] args){
+	public void StartTetrisGame(){
 		JFrame f = new JFrame("TETRIS");
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		System.out.println("inizio di tetris");
+		//f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(12*26+10, 26*23+25);
 		f.setVisible(true);
+		f.setLocation(100,100);
 
 		final Tetris game = new Tetris();
 		game.init();

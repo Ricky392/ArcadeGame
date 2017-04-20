@@ -3,46 +3,51 @@ package bin;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.event.KeyListener;
 
 public class Pong extends JPanel implements Runnable{
 	private static final long serialVersionUID = 1L;
 
 	//Attributi
 	//Posizioni di X e Y della palla
-	int pallaX = 10;
-	int pallaY = 100;
+
+	private int pallaX = 10;
+	private int pallaY = 100;
 
 	//Posizione di X e Y del giocatore 1
-	int giocatore1X = 10;
-	int giocatore1Y = 100;
+	private int giocatore1X = 10;
+	private int giocatore1Y = 100;
 
 	//Posizione di X e Y del giocatore 2
-	int giocatore2X = 230;
-	int giocatore2Y = 100;
+	private int giocatore2X = 230;
+	private int giocatore2Y = 100;
 
-	Thread hilo;
+	private Thread hilo;
 
-	int destra = 5;
-	int sinistra = -5;
-	int su = 5;
-	int giu = -5;
-	int larghezza;
-	int altezza;
+	private int destra = 5;
+	private int sinistra = -5;
+	private int su = 5;
+	private int giu = -5;
+	private int larghezza;
+	private int altezza;
 
 	//Punteggio
-	int contPlay1 = -1;
-	int contPlay2 = -1;
+	private int contPlay1 = -1;
+	private int contPlay2 = -1;
 
-	boolean player1FlagArr;
-	boolean player1FlagAba;
-	boolean player2FlagArr;
-	boolean player2FlagAba;
-	boolean gioco;
-	boolean gameOver;
+	private boolean player1FlagArr;
+	private boolean player1FlagAba;
+	private boolean player2FlagArr;
+	private boolean player2FlagAba;
+	private boolean gioco = false;
+	private boolean gameOver;
 
 	public Pong(){
 		gioco=true;
-		hilo=new Thread(this);
+		System.out.println("Inizio Pong");
+		Thread hilo = new Thread(this);
 		hilo.start();
 	}
 
@@ -79,50 +84,6 @@ public class Pong extends JPanel implements Runnable{
 		repaint();
 	}
 
-	// Here we receive from the game container class the key pressed
-	public void keyPressed(KeyEvent evt){
-		switch(evt.getKeyCode()){
-
-		// Move ship 1
-		case KeyEvent.VK_W :
-		player1FlagArr = true;
-		break;
-		case KeyEvent.VK_S :
-		player1FlagAba = true;
-		break;
-
-		// Move ship 2
-		case KeyEvent.VK_UP:
-		player2FlagArr=true;
-		break;
-		case KeyEvent.VK_DOWN:
-		player2FlagAba=true;
-		break;
-		}
-	}
-
-	// Here we receive from the game container class the key released
-	public void keyReleased(KeyEvent evt)
-	{
-	switch(evt.getKeyCode())
-	{
-	// Mover Nave1
-	case KeyEvent.VK_W :
-	player1FlagArr = false;
-	break;
-	case KeyEvent.VK_S :
-	player1FlagAba = false;
-	break;
-
-	// Mover nave 2
-	case KeyEvent.VK_UP:
-	player2FlagArr=false;
-	break;
-	case KeyEvent.VK_DOWN:
-	player2FlagAba=false;
-	break;
-	}
-	}
 
 	// Move player 1
 	public void moverPlayer1(){
@@ -158,8 +119,67 @@ public class Pong extends JPanel implements Runnable{
 
 	public void run(){
 	// TODO Auto-generated method stub
+	JFrame frame = new JFrame("Pong");
+	frame.setSize(250,250);
+	frame.setVisible(true);
+	frame.setLocation(100,100);
+	frame.add(this);
+	System.out.println("inizio tread pong");
+
 	boolean izqDer=false;
 	boolean arrAba=false;
+
+	frame.addKeyListener(new KeyListener(){
+		public void keyTyped(KeyEvent e){}
+		// Here we receive from the game container class the key pressed
+		public void keyPressed(KeyEvent evt){
+			switch(evt.getKeyCode()){
+
+			// Move ship 1
+			case KeyEvent.VK_W :
+			player1FlagArr = true;
+			moverPlayer1();
+			break;
+			case KeyEvent.VK_S :
+			player1FlagAba = true;
+			moverPlayer1();
+			break;
+
+			// Move ship 2
+			case KeyEvent.VK_UP:
+			player2FlagArr=true;
+			moverPlayer2();
+			break;
+			case KeyEvent.VK_DOWN:
+			player2FlagAba=true;
+			moverPlayer2();
+			break;
+			}
+		}
+
+		// Here we receive from the game container class the key released
+		public void keyReleased(KeyEvent evt)
+		{
+		switch(evt.getKeyCode())
+		{
+		// Mover Nave1
+		case KeyEvent.VK_W :
+		player1FlagArr = false;
+		break;
+		case KeyEvent.VK_S :
+		player1FlagAba = false;
+		break;
+
+		// Mover nave 2
+		case KeyEvent.VK_UP:
+		player2FlagArr=false;
+		break;
+		case KeyEvent.VK_DOWN:
+		player2FlagAba=false;
+		break;
+		}
+	}
+	});
 
 	while(true){
 		if(gioco){
@@ -198,12 +218,6 @@ public class Pong extends JPanel implements Runnable{
 	}
 	catch(InterruptedException ex){}
 
-	// Move player 1
-	moverPlayer1();
-
-	// Move player 2
-	moverPlayer2();
-
 	// The score of the player 1 increase
 	if(pallaX >= (larghezza - 8))
 		contPlay1++;
@@ -230,13 +244,13 @@ public class Pong extends JPanel implements Runnable{
 	}
 	}
 
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		SwingUtilities.invokeLater(new Runnable(){
 		public void run(){
-			Main thisClass = new Main();
-			thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			thisClass.setVisible(true);
+			Pong p = new Pong();
+			p.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			p.setVisible(true);
 		}
 		});
-	}
+	}*/
 }
